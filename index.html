@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>𝙉 𝙄 𝙈 𝘼 𝙊 F 𝘾</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --glass-bg: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --accent-green: #00ff87;
+            --accent-blue: #60a5fa;
+            --text-color: #f3f4f6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top left, #1e1b4b, #0f172a, #090d16);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        /* Glassmorphism Styling (Apple-style) */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        /* Header / Navbar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(11, 15, 25, 0.6);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #60a5fa, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-google {
+            background: #ea4335;
+            border: none;
+        }
+
+        .btn-google:hover { background: #d93025; }
+
+        /* Main Container */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* Tabs Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            margin: 10px 0;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .result-box {
+            margin-top: 12px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.85rem;
+            max-height: 250px;
+            overflow-y: auto;
+            word-break: break-all;
+        }
+
+        /* About Modal & Glowing Ring */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: rgba(30, 41, 59, 0.85);
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+        }
+
+        /* Light Green Spinning Glowing Ring */
+        .ring-container {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .glowing-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top: 4px solid var(--accent-green);
+            border-right: 4px solid var(--accent-green);
+            box-shadow: 0 0 15px var(--accent-green);
+            animation: spin 1.5s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .ring-icon {
+            font-size: 2rem;
+            color: var(--accent-green);
+        }
+
+        /* Floating AI Assistant Button */
+        .ai-assistant-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.5);
+            z-index: 99;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .ai-assistant-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Dynamic Image Output */
+        .out-img {
+            max-width: 100%;
+            border-radius: 12px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="logo">𝙉 𝙄 𝙈 𝘼 𝙊 F 𝘾</div>
+        <div class="nav-buttons">
+            <button class="btn" onclick="openModal('aboutModal')"><i class="fa-solid fa-circle-info"></i> About</button>
+            <button class="btn" onclick="openModal('profileModal')"><i class="fa-solid fa-user-pen"></i> Edit Profile</button>
+            <button class="btn" onclick="openModal('authModal')"><i class="fa-solid fa-right-to-bracket"></i> Signup</button>
+            <button class="btn btn-google" onclick="googleLogin()"><i class="fa-brands fa-google"></i> Login</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="grid">
+
+            <!-- AI Chat Section (Menu Tab) -->
+            <div class="glass-card">
+                <h3><i class="fa-solid fa-robot"></i> ChatGPT AI Chat</h3>
+                <input type="text" id="aiInput" placeholder="Ask AI anything...">
+                <button class="btn" style="width:100%" onclick="callAI()">Ask AI</button>
+                <div class="result-box" id="aiResult">Response will appear here...</div>
+            </div>
+
+            <!-- Social Downloaders -->
+            <div class="glass-card">
+                <h3><i class="fa-solid fa-download"></i> Social Media Downloader</h3>
+                <input type="text" id="dlUrl" placeholder="Paste Video URL (TikTok, FB, YT)...">
+                <select id="dlType">
+                    <option value="tiktok">TikTok Video</option>
+                    <option value="facebook">Facebook Video</option>
+                    <option value="ytmp4">YouTube Video (MP4)</option>
+                    <option value="ytmp3">YouTube Audio (MP3)</option>
+                </select>
+                <button class="btn" style="width:100%" onclick="downloadMedia()">Download</button>
+                <div class="result-box" id="dlResult">Download links...</div>
+            </div>
+
+            <!-- WhatsApp Channel React -->
+            <div class="glass-card">
+                <h3><i class="fa-brands fa-whatsapp"></i> WA Channel React</h3>
+                <input type="text" id="waLink" placeholder="WhatsApp Channel Post URL...">
+                <input type="text" id="waEmoji" placeholder="Emoji (e.g. ❤️,👍)">
+                <button class="btn" style="width:100%" onclick="waReact()">Send Reactions</button>
+                <div class="result-box" id="waResult">Status...</div>
+            </div>
+
+            <!-- Web Screenshot -->
+            <div class="glass-card">
+                <h3><i class="fa-solid fa-camera"></i> Website Screenshot</h3>
+                <input type="text" id="ssUrl" placeholder="https://google.com">
+                <button class="btn" style="width:100%" onclick="takeScreenshot()">Capture</button>
+                <div class="result-box" id="ssResult">Screenshot output...</div>
+            </div>
+
+            <!-- Search Tools -->
+            <div class="glass-card">
+                <h3><i class="fa-solid fa-magnifying-glass"></i> Search Tools</h3>
+                <input type="text" id="sqQuery" placeholder="Search (Papers, Apple Music, Images)...">
+                <select id="sqType">
+                    <option value="pastpapers">Past Papers</option>
+                    <option value="applemusic">Apple Music</option>
+                    <option value="googleimages">Google Image Search</option>
+                </select>
+                <button class="btn" style="width:100%" onclick="searchTools()">Search</button>
+                <div class="result-box" id="sqResult">Results...</div>
+            </div>
+
+            <!-- Stalker & Wallpapers -->
+            <div class="glass-card">
+                <h3><i class="fa-solid fa-shield-halved"></i> Extra Utilities</h3>
+                <button class="btn" style="width:100%; margin-bottom: 8px;" onclick="githubStalk()">Stalk GitHub User</button>
+                <button class="btn" style="width:100%" onclick="getWallpapers()">Get 4K Wallpapers</button>
+                <div class="result-box" id="extraResult">Output...</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Floating AI Site Assistant Button -->
+    <button class="ai-assistant-btn" onclick="openModal('aiAssistantModal')">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+    </button>
+
+    <!-- About Modal -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <div class="ring-container">
+                <div class="glowing-ring"></div>
+                <i class="fa-solid fa-star ring-icon"></i>
+            </div>
+            <h2>About</h2>
+            <p style="margin-top: 10px; color: #cbd5e1;">𝙬𝙚𝙡𝙡 𝙘𝙤𝙢𝙚 𝙩𝙤 𝙉 𝙄 𝙈 𝘼 𝙊 F 𝘾 𝙑 . 00 1</p>
+            <br>
+            <button class="btn" onclick="closeModal('aboutModal')">Close</button>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <h2>Edit Profile</h2>
+            <input type="text" id="profName" placeholder="Your Name">
+            <input type="text" id="profBio" placeholder="Your Bio">
+            <button class="btn" style="width:100%" onclick="saveProfile()">Save Changes</button>
+            <br><br>
+            <button class="btn" onclick="closeModal('profileModal')">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <h2>Sign Up</h2>
+            <input type="email" placeholder="Email">
+            <input type="password" placeholder="Password">
+            <button class="btn" style="width:100%">Register</button>
+            <br><br>
+            <button class="btn" onclick="closeModal('authModal')">Close</button>
+        </div>
+    </div>
+
+    <!-- Floating AI Assistant Modal -->
+    <div id="aiAssistantModal" class="modal">
+        <div class="modal-content">
+            <h2>Site Assistant AI</h2>
+            <p style="font-size: 0.8rem; color: #aaa;">How can I help you navigate the site?</p>
+            <input type="text" id="assistantPrompt" placeholder="Ask site assistant...">
+            <button class="btn" style="width:100%" onclick="askSiteAssistant()">Send</button>
+            <div class="result-box" id="assistantResult">Hello! How can I help you today?</div>
+            <br>
+            <button class="btn" onclick="closeModal('aiAssistantModal')">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = "supun-gu4cu5z5p5p72c2b8wa337jg";
+
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        function googleLogin() {
+            alert("Google Authentication Redirecting...");
+        }
+
+        function saveProfile() {
+            alert("Profile Updated Successfully!");
+            closeModal('profileModal');
+        }
+
+        // 1. ChatGPT AI Function
+        async function callAI() {
+            const prompt = encodeURIComponent(document.getElementById('aiInput').value || 'Hello');
+            const resBox = document.getElementById('aiResult');
+            resBox.innerText = 'Thinking...';
+            try {
+                const res = await fetch(`https://supunofc.site/api/ai/ai2?prompt=${prompt}&model=chatgpt&apikey=${API_KEY}`);
+                const data = await res.json();
+                resBox.innerText = data.result || JSON.stringify(data, null, 2);
+            } catch (e) { resBox.innerText = 'Error loading AI response!'; }
+        }
+
+        // 2. Site Assistant AI
+        async function askSiteAssistant() {
+            const prompt = encodeURIComponent(document.getElementById('assistantPrompt').value || 'Hi');
+            const resBox = document.getElementById('assistantResult');
+            resBox.innerText = 'Processing...';
+            try {
+                const res = await fetch(`https://supunofc.site/api/ai/ai2?prompt=${prompt}&model=chatgpt&apikey=${API_KEY}`);
+                const data = await res.json();
+                resBox.innerText = data.result || JSON.stringify(data, null, 2);
+            } catch (e) { resBox.innerText = 'Error!'; }
+        }
+
+        // 3. Social Media Downloader
+        async function downloadMedia() {
+            const url = encodeURIComponent(document.getElementById('dlUrl').value);
+            const type = document.getElementById('dlType').value;
+            const resBox = document.getElementById('dlResult');
+            resBox.innerText = 'Fetching...';
+
+            let ep = '';
+            if (type === 'tiktok') ep = `https://supunofc.site/api/download/tiktok/dl?url=${url}&type=auto&apikey=${API_KEY}`;
+            else if (type === 'facebook') ep = `https://supunofc.site/api/download/facebook/dl?url=${url}&apikey=${API_KEY}`;
+            else if (type === 'ytmp4') ep = `https://supunofc.site/api/download/ytmp4-down?url=${url}&apikey=${API_KEY}`;
+            else if (type === 'ytmp3') ep = `https://supunofc.site/api/download/ytmp3-down?url=${url}&apikey=${API_KEY}`;
+
+            try {
+                const res = await fetch(ep);
+                const data = await res.json();
+                resBox.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (e) { resBox.innerText = 'Error Downloading!'; }
+        }
+
+        // 4. WhatsApp Reactions
+        async function waReact() {
+            const link = encodeURIComponent(document.getElementById('waLink').value);
+            const emoji = encodeURIComponent(document.getElementById('waEmoji').value || '❤️');
+            const resBox = document.getElementById('waResult');
+            resBox.innerText = 'Processing...';
+            try {
+                const res = await fetch(`https://supunofc.site/api/other/wa-reaction?link=${link}&emoji=${emoji}&apikey=${API_KEY}`);
+                const data = await res.json();
+                resBox.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (e) { resBox.innerText = 'Error reacting!'; }
+        }
+
+        // 5. Screenshot
+        function takeScreenshot() {
+            const url = encodeURIComponent(document.getElementById('ssUrl').value || 'https://google.com');
+            const resBox = document.getElementById('ssResult');
+            const imgUrl = `https://supunofc.site/api/convert/ssweb?url=${url}&apikey=${API_KEY}`;
+            resBox.innerHTML = `<img class="out-img" src="${imgUrl}" alt="Screenshot">`;
+        }
+
+        // 6. Search Tools
+        async function searchTools() {
+            const q = encodeURIComponent(document.getElementById('sqQuery').value || 'ICT');
+            const type = document.getElementById('sqType').value;
+            const resBox = document.getElementById('sqResult');
+            resBox.innerText = 'Searching...';
+
+            let ep = '';
+            if (type === 'pastpapers') ep = `https://supunofc.site/api/search/pastpapers/search?q=${q}&apikey=${API_KEY}`;
+            else if (type === 'applemusic') ep = `https://supunofc.site/api/search/applemusic/search?q=${q}&apikey=${API_KEY}`;
+            else if (type === 'googleimages') ep = `https://supunofc.site/api/search/google-image-search/search?q=${q}&apikey=${API_KEY}`;
+
+            try {
+                const res = await fetch(ep);
+                const data = await res.json();
+                resBox.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (e) { resBox.innerText = 'Search Failed!'; }
+        }
+
+        // 7. GitHub Stalker & Wallpapers
+        async function githubStalk() {
+            const username = prompt("Enter GitHub Username:", "octocat");
+            if(!username) return;
+            const resBox = document.getElementById('extraResult');
+            resBox.innerText = 'Stalking...';
+            try {
+                const res = await fetch(`https://supunofc.site/api/stalker/github/stalker?username=${username}&apikey=${API_KEY}`);
+                const data = await res.json();
+                resBox.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (e) { resBox.innerText = 'Failed to fetch user!'; }
+        }
+
+        async function getWallpapers() {
+            const resBox = document.getElementById('extraResult');
+            resBox.innerText = 'Fetching Wallpapers...';
+            try {
+                const res = await fetch(`https://supunofc.site/api/image/4kwallpapers/home?apikey=${API_KEY}`);
+                const data = await res.json();
+                resBox.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (e) { resBox.innerText = 'Failed to fetch wallpapers!'; }
+        }
+    </script>
+</body>
+  </html>
